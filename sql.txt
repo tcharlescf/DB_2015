@@ -1,0 +1,60 @@
+drop table product;
+drop table cu_order;
+drop table stock;
+drop table sales_person;
+drop table cu_store;
+
+create table product (
+p_no int,
+p_name varchar2(15),
+edate date,
+price int,
+i_date date ,
+constraint product_pk_p_no primary key(p_no),
+constraint product_fk_i_date foreign key(i_date) references stock (i_date)
+);
+
+
+create table stock (
+i_date date,
+pname varchar2(15),
+ea int,
+constraint stock_pk_i_date primary key(i_date)
+);
+
+create table cu_order (
+o_no int,
+o_date date,
+c_no int,
+p_no int,
+constraint order_pk_o_no primary key(o_no));
+
+alter table product add constraint product_fk_p_no_to_order foreign key (p_no) references cu_order(o_no);
+alter table cu_order add constraint cu_order_fk_c_no foreign key (c_no) references customer(c_no);
+
+
+
+create table customer (
+c_no int,
+c_name varchar2(15),
+phone varchar2(15),
+constraint customer_pk_c_no primary key(c_no) );
+
+create table sales_person (
+e_no int,
+e_name varchar2(15),
+phone varchar2(15),
+s_no int,
+constraint sales_person_pk_e_no primary key(e_no));
+
+create table cu_store(
+s_no int,
+s_name varchar2(15),
+e_no int,
+c_no int,
+s_sum int,
+constraint cu_store_pk_s_no primary key(s_no),
+constraint cu_store_fk_c_no foreign key(c_no) references customer (c_no),
+constraint cu_store_fk_e_no foreign key(e_no) references sales_person (e_no) );
+
+
